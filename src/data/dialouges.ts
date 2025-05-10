@@ -3,27 +3,31 @@ import { Dialogue } from '../types/GameTypes';
 // Intro sequence dialogues
 export const introDialogues: Dialogue[] = [
   {
-    text: "Welcome to '80s Tech Island! The year is 1985, and you've just arrived at this mysterious island filled with the wonders of technology.",
+    text: "Welcome to Hackathon Island! Your road to being a fullstack developer starts now. Coding developers from all around the world come here to participate in the 1980s Decades Hackathon, where we see who is the ultimate developer of the decade (aka the 1980s).",
     speaker: "Captain"
   },
   {
-    text: "I'll be leaving you here at the shore. Follow the path to meet your guide who will show you around the island.",
+    text: "I'll be leaving you here at the shore. Follow the path to meet Bill up there who will help you out. Competition begins soon, and you must rest up your energy.",
     speaker: "Captain"
   },
   {
-    text: "Hello there! I'm TechGuru, your guide to this amazing island of technological wonders!",
+    text: "Hello! I am Bill Gates, the founder of Microsoft Corporation. THis week I am hosting the 1980s Decades Hackathon.",
     speaker: "TechGuru"
   },
   {
-    text: "The island is divided into six regions, each representing a different aspect of '80s technology. Your mission is to complete all the mini-games and become a tech master!",
+    text: "The island is divided into six regions, each representing a different aspect of '80s technology. Your mission is to complete all the mini-games and become a developer master!",
     speaker: "TechGuru"
   },
   {
-    text: "Use the arrow keys or click on the map to navigate. Click on NPCs to talk to them and learn more about each region.",
+    text: "Use the arrow keys to navigate. Click on other people to talk to them and learn more about each region.",
     speaker: "TechGuru"
   },
   {
-    text: "Your journey begins now! Explore the island and embrace the radical world of '80s technology!",
+    text: "Your journey begins now! Explore the island and embrace technology!",
+    speaker: "TechGuru"
+  },
+  {
+    text: "Who knows, I may even make you the manager of my new Microsoft Digital department!",
     speaker: "TechGuru"
   }
 ];
@@ -32,27 +36,42 @@ export const introDialogues: Dialogue[] = [
 export const npcDialogues: Record<string, Dialogue[]> = {
   hardwareZone: [
     {
-      text: "Welcome to the Hardware Zone! Back in the '80s, personal computers were just becoming mainstream. Remember the Commodore 64, Apple II, and IBM PC?",
+      text: "Welcome to the Hardware Zone! I am William Lowe, an executive at IBM. You probably haven't heard of me, but I am known as the father of the IBM PC, having pitched and brought out the idea",
       speaker: "Hardware Hank"
     },
     {
-      text: "Your challenge here is to match computer parts with their correct functions. Ready to test your hardware knowledge?",
+      text: "Match the parts to the PC and finish it in record time! Good luck and you have Tech-tastic times ahead! HA HA HA",
+      speaker: "Hardware Hank"
+    },
+    {
+      text: "HAHAHA"
+      speaker: "Hardware Hank"
+    },
+    {
+      text: "Ha...ha...ha"
       speaker: "Hardware Hank"
     }
   ],
   softwareValley: [
     {
-      text: "Welcome to Software Valley! The '80s saw the rise of iconic software like VisiCalc, WordPerfect, and early versions of MS-DOS.",
+      text: "...",
       speaker: "Software Sam"
     },
     {
-      text: "Your challenge is to answer questions about '80s software. Think you're up for it?",
+      text: "...ugh I hate my life... oh hey didn't see you there. So I guess Ill make this short and sweet. I'm Paul Allen who co-founded Microsoft with that Gates kid back there, and was a key figure in the development of software and brining software to the world.",
       speaker: "Software Sam"
+    },
+    {
+      text: "Now go on and debug this thing, don't disappoint me..."
+      speaker: "Software Sam"
+    }
+    {
+      text: "GATES WHERE IS MY COFFEE YOU LITTLE SON OF A GUN"
     }
   ],
   arcadeCove: [
     {
-      text: "Welcome to Arcade Cove! The '80s was the golden age of arcade games with classics like Pac-Man, Space Invaders, and Donkey Kong.",
+      text: "Welcome to Arcade Cove! I am Noah Bushnell, the co-founder of Atari Incorporations, and the creater of the revolutionary Pong!"
       speaker: "Arcade Annie"
     },
     {
@@ -62,7 +81,7 @@ export const npcDialogues: Record<string, Dialogue[]> = {
   ],
   consoleIsland: [
     {
-      text: "Welcome to Console Island! The '80s saw the Nintendo Entertainment System, Atari 2600, and Sega Master System dominate living rooms.",
+      text: "Hey there, this is the TV tier. I am John Logie Baird",
       speaker: "Console Carl"
     },
     {
