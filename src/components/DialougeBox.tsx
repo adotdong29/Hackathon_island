@@ -1,61 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Dialogue } from '../types/GameTypes';
 
 interface DialogueBoxProps {
-  text: string;
-  speaker: string;
-  onAdvance: () => void;
+  dialogues: Dialogue[];
+  onComplete: () => void;
 }
 
-const DialogueBox: React.FC<DialogueBoxProps> = ({ text, speaker, onAdvance }) => {
-  const [displayedText, setDisplayedText] = useState('');
-  const [isTyping, setIsTyping] = useState(true);
-  const typingSpeed = 30; // ms per character
+const DialogueBox: React.FC<DialogueBoxProps> = ({ dialogues, onComplete }) => {
+  const [index, setIndex] = useState(0);
+  const current = dialogues[index];
 
-  useEffect(() => {
-    setDisplayedText('');
-    setIsTyping(true);
-    
-    let index = 0;
-    const timer = setInterval(() => {
-      if (index < text.length) {
-        setDisplayedText((prev) => prev + text.charAt(index));
-        index++;
-      } else {
-        setIsTyping(false);
-        clearInterval(timer);
-      }
-    }, typingSpeed);
-    
-    return () => clearInterval(timer);
-  }, [text]);
-
-  const handleClick = () => {
-    if (isTyping) {
-      // Show all text immediately if still typing
-      setDisplayedText(text);
-      setIsTyping(false);
+  const handleNext = () => {
+    if (index + 1 < dialogues.length) {
+      setIndex(index + 1);
     } else {
-      // Advance to next dialogue
-      onAdvance();
+      onComplete();
     }
   };
 
   return (
-    <div 
-      className="dialogue-box mx-4 md:mx-auto" 
-      onClick={handleClick}
-    >
-      {speaker && (
-        <div className="text-[#00ffff] mb-2 font-bold">
-          {speaker}
-        </div>
-      )}
-      <div>{displayedText}</div>
-      {!isTyping && (
-        <div className="text-right mt-2">
-          <span className="text-[#ffff00] blink">▼</span>
-        </div>
-      )}
+    <div className="dialogue-box" style={{
+      position: 'absolute',
+      bottom: '20px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      background: 'rgba(0, 0, 0, 0.7)',
+      color: '#fff',
+      padding: '16px',
+      borderRadius: '8px',
+      maxWidth: '80%',
+      textAlign: 'center'
+    }}>
+      <p><strong>{current.speaker}:</strong> {current.text}</p>
+      <button onClick={handleNext} style={{
+        marginTop: '8px',
+        padding: '8px 16px',
+        background: '#0f0',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer'
+      }}>▶ Next</button>
     </div>
   );
 };
