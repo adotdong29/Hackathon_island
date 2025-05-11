@@ -13,6 +13,22 @@ export class RenderSystem {
     this.ctx.imageSmoothingEnabled = false;
   }
 
+  public loadImage(key: string, src: string): void {
+    const img = new Image();
+    const promise = new Promise<void>((resolve, reject) => {
+        img.onload = () => {
+            this.sprites.set(key, img);
+            resolve();
+        };
+        img.onerror = () => {
+            console.error(`Failed to load image: ${src} for key: ${key}`);
+            reject(new Error(`Failed to load image: ${src}`));
+        };
+    });
+    img.src = src;
+    this.loadedPromises.push(promise);
+  }
+
   public async waitForLoad(): Promise<void> {
     return Promise.all(this.loadedPromises).then(() => {});
   }
@@ -138,5 +154,39 @@ export class RenderSystem {
     this.ctx.arc(x, y, radius, 0, Math.PI * 2);
     this.ctx.fillStyle = color;
     this.ctx.fill();
+  }
+
+  public drawSprite(
+    spriteKey: string,
+    dx: number, // destination x
+    dy: number, // destination y
+    dWidth: number, // destination width
+    dHeight: number, // destination height
+    sx: number, // source x
+    sy: number, // source y
+    sWidth: number, // source width
+    sHeight: number, // source height
+    flipped: boolean = false
+  ): void {
+    const image = this.sprites.get(spriteKey);
+    if (image) {
+      this.ctx.save();
+      if (flipped) {
+        this.ctx.translate(dx + dWidth, dy); // Move to the right edge of the destination
+        this.ctx.scale(-1, 1); // Flip horizontally
+        this.ctx.drawImage(image, sx, sy, sWidth, sHeight, 0, 0, dWidth, dHeight);
+      } else {
+        this.ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+      }
+      this.ctx.restore();
+    } else {
+      // Fallback: Draw a magenta box if sprite image is not found
+      this.ctx.fillStyle = 'magenta';
+      this.ctx.fillRect(dx, dy, dWidth, dHeight);
+      this.ctx.fillStyle = 'black';
+      this.ctx.textAlign = 'center';
+      this.ctx.textBaseline = 'middle';
+      this.ctx.fillText(spriteKey.substring(0,1), dx + dWidth/2, dy + dHeight/2);
+    }
   }
 }

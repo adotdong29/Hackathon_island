@@ -180,7 +180,8 @@ export class SpriteSystem {
       frameX,
       frameY,
       animation.frameWidth,
-      animation.frameHeight
+      animation.frameHeight,
+      sprite.flipped // Pass the flipped status
     );
   }
 

@@ -47,11 +47,20 @@ export class GameEngine {
     this.mapSystem = new MapSystem();
     this.characterSystem = new CharacterSystem();
     this.animationSystem = new AnimationSystem();
-    this.spriteSystem = new SpriteSystem();
-    
-    // Initialize pathfinding after map is loaded
+    this.spriteSystem = new SpriteSystem(); // SpriteSystem is initialized
+
+    // Load sprite assets (adjust paths as necessary)
+    // These keys ('player-sprites', 'npc-sprites') must match what SpriteSystem expects for the image key
+    // and Character.spriteSheet should refer to these keys.
+    this.renderSystem.loadImage('player-sprites', '/sprites/player_spritesheet.png'); // Example path
+    this.renderSystem.loadImage('npc-sprites', '/sprites/npc_spritesheet.png');       // Example path
+
+    // Initialize pathfinding and potentially other logic after all assets are loaded
     this.renderSystem.waitForLoad().then(() => {
+      console.log("All assets loaded, initializing pathfinding.");
       this.pathfindingSystem = new PathfindingSystem(this.mapSystem.getMap());
+      // Consider moving intro animation start here if it depends on loaded assets
+      // or ensure start() is called after this promise resolves.
     });
   }
 
@@ -62,7 +71,9 @@ export class GameEngine {
     this.lastTime = performance.now();
     requestAnimationFrame(this.gameLoop);
     
-    // Start intro sequence if we're in intro phase
+    // Start intro sequence if we're in intro phase (ensure assets are ready or animation is non-visual)
+    // This might be better placed after renderSystem.waitForLoad() resolves if intro has visuals.
+    // For now, assuming AnimationSystem's intro is non-visual or its visuals are handled separately.
     if (this.gameState.gamePhase === 'INTRO') {
       this.startIntroAnimation();
     }
@@ -147,15 +158,41 @@ export class GameEngine {
     this.mapSystem.update(deltaTime);
     this.characterSystem.update(deltaTime);
     this.animationSystem.update(deltaTime);
+
+    // Sync CharacterSystem state to SpriteSystem
+    const player = this.characterSystem.getPlayer();
+    if (player) {
+      this.spriteSystem.updateSpritePosition(player.id, player.x, player.y); // Use player.id
+      const animationName = this.characterSystem.isPlayerMoving() ? 'walk' : 'idle';
+      this.spriteSystem.setAnimation(player.id, animationName); // Use player.id
+      
+      const playerSpriteData = this.spriteSystem.getSpriteData(player.id); // Use player.id
+      if (playerSpriteData) {
+        const direction = this.characterSystem.getPlayerDirection() as 'up' | 'down' | 'left' | 'right';
+        playerSpriteData.direction = direction;
+        playerSpriteData.flipped = direction === 'left'; // Player sprite flips when moving left
+      }
+    }
+
+    this.characterSystem.getNPCs().forEach(npc => {
+      this.spriteSystem.updateSpritePosition(npc.id, npc.x, npc.y); // Use npc.id
+      // Assuming NPCs are idle or have a default animation state managed by SpriteSystem
+      // For simplicity, we'll ensure their default 'idle' animation is set if not talking
+      const npcSpriteData = this.spriteSystem.getSpriteData(npc.id); // Use npc.id
+      if (npcSpriteData && npcSpriteData.currentAnimation !== 'talk') { // Don't override talk animation
+        this.spriteSystem.setAnimation(npc.id, 'idle'); // Use npc.id
+        npcSpriteData.direction = 'down'; // Default NPC direction
+        npcSpriteData.flipped = false; // NPCs generally don't flip unless designed to
+      }
+    });
+
     this.spriteSystem.update(deltaTime);
-    
-    // Check for region changes based on player position
     this.checkRegionChange();
     
-    // Update player position callback
-    const playerPos = this.characterSystem.getPlayerPosition();
-    if (playerPos) {
-      this.updatePlayerPositionCallback(playerPos.x, playerPos.y);
+    // Update player position callback (use the already fetched player)
+    if (player) { 
+      this.mapSystem.setCameraTarget(player.x, player.y); // Make camera follow player
+      this.updatePlayerPositionCallback(player.x, player.y);
     }
   }
 
@@ -179,7 +216,7 @@ export class GameEngine {
     // Render in proper order (background → map → characters → UI)
     this.renderSystem.renderBackground();
     this.mapSystem.render(this.renderSystem);
-    this.characterSystem.render(this.renderSystem);
+    this.characterSystem.render(this.renderSystem, this.spriteSystem); // Pass spriteSystem
     
     this.renderSystem.end();
   }

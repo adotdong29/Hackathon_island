@@ -1,5 +1,6 @@
 import { RenderSystem } from './RenderSystem';
 import { Character } from '../types/GameTypes';
+import { SpriteSystem } from './SpriteSystem'; // Import SpriteSystem
 import { characters } from '../data/characters';
 
 export class CharacterSystem {
@@ -27,15 +28,11 @@ export class CharacterSystem {
     this.updatePlayerMovement();
   }
 
-  public render(renderSystem: RenderSystem): void {
+  public render(renderSystem: RenderSystem, spriteSystem: SpriteSystem): void { // Add spriteSystem parameter
     // Render NPCs
     this.characters.forEach(character => {
       if (character.id !== 'player') {
-        renderSystem.drawNPC(
-          character.x,
-          character.y,
-          this.getNPCColor(character.id)
-        );
+        spriteSystem.renderSprite(renderSystem, character.id, character.spriteSheet); // Use character.id for sprite data and character.spriteSheet for image key
         
         // Draw character name above
         renderSystem.drawText(
@@ -51,12 +48,7 @@ export class CharacterSystem {
     
     // Render player
     if (this.player) {
-      renderSystem.drawCharacter(
-        this.player.x,
-        this.player.y,
-        this.playerDirection,
-        this.playerMoving
-      );
+      spriteSystem.renderSprite(renderSystem, this.player.id, this.player.spriteSheet); // Use player.id and player.spriteSheet
     }
   }
 
@@ -171,5 +163,21 @@ export class CharacterSystem {
   public getPlayerPosition(): { x: number, y: number } | null {
     if (!this.player) return null;
     return { x: this.player.x, y: this.player.y };
+  }
+
+  public getPlayer(): Character | null {
+    return this.player;
+  }
+
+  public getNPCs(): Character[] {
+    return this.characters.filter(c => c.id !== 'player');
+  }
+
+  public isPlayerMoving(): boolean {
+    return this.playerMoving;
+  }
+
+  public getPlayerDirection(): string {
+    return this.playerDirection;
   }
 }

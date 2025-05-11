@@ -1,22 +1,12 @@
-import React, { useState } from 'react';
-import { Dialogue } from '../types/GameTypes';
+import React from 'react';
 
 interface DialogueBoxProps {
-  dialogues: Dialogue[];
-  onComplete: () => void;
+  text: string;
+  speaker: string;
+  onAdvance: () => void;
 }
 
-const DialogueBox: React.FC<DialogueBoxProps> = ({ dialogues, onComplete }) => {
-  const [index, setIndex] = useState(0);
-  const current = dialogues[index];
-
-  const handleNext = () => {
-    if (index + 1 < dialogues.length) {
-      setIndex(index + 1);
-    } else {
-      onComplete();
-    }
-  };
+const DialogueBox: React.FC<DialogueBoxProps> = ({ text, speaker, onAdvance }) => {
 
   return (
     <div className="dialogue-box" style={{
@@ -31,8 +21,8 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({ dialogues, onComplete }) => {
       maxWidth: '80%',
       textAlign: 'center'
     }}>
-      <p><strong>{current.speaker}:</strong> {current.text}</p>
-      <button onClick={handleNext} style={{
+      <p><strong>{speaker}:</strong> {text}</p>
+      <button onClick={onAdvance} style={{
         marginTop: '8px',
         padding: '8px 16px',
         background: '#0f0',
