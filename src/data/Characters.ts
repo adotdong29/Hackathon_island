@@ -9,7 +9,7 @@ export const characters: Character[] = [
     name: 'Player',
     x: 800, // Starting position
     y: 900,
-    spriteSheet: 'player-sprites', // Use the image key
+    spriteSheet: 'character-atlas',
     dialogues: []
   },
   
@@ -19,7 +19,7 @@ export const characters: Character[] = [
     name: 'TechGuru',
     x: 800, // Center position
     y: 800,
-    spriteSheet: 'npc-sprites', // Use the image key
+    spriteSheet: 'character-atlas',
     dialogues: []
   },
   
@@ -29,7 +29,7 @@ export const characters: Character[] = [
     name: 'Hardware Hank',
     x: 960, // Hardware Zone
     y: 800,
-    spriteSheet: 'npc-sprites', // Use the image key
+    spriteSheet: 'character-atlas',
     dialogues: npcDialogues.hardwareZone
   },
   {
@@ -37,7 +37,7 @@ export const characters: Character[] = [
     name: 'Software Sam',
     x: 800, // Software Valley
     y: 640,
-    spriteSheet: 'npc-sprites', // Use the image key
+    spriteSheet: 'character-atlas',
     dialogues: npcDialogues.softwareValley
   },
   {
@@ -45,7 +45,7 @@ export const characters: Character[] = [
     name: 'Arcade Annie',
     x: 640, // Arcade Cove
     y: 800,
-    spriteSheet: 'npc-sprites', // Use the image key
+    spriteSheet: 'character-atlas',
     dialogues: npcDialogues.arcadeCove
   },
   {
@@ -53,7 +53,7 @@ export const characters: Character[] = [
     name: 'Console Carl',
     x: 896, // Console Island
     y: 896,
-    spriteSheet: 'npc-sprites', // Use the image key
+    spriteSheet: 'character-atlas',
     dialogues: npcDialogues.consoleIsland
   },
   {
@@ -61,7 +61,7 @@ export const characters: Character[] = [
     name: 'Mobile Molly',
     x: 704, // Mobile Bay
     y: 896,
-    spriteSheet: 'npc-sprites', // Use the image key
+    spriteSheet: 'character-atlas',
     dialogues: npcDialogues.mobileBay
   },
   {
@@ -69,7 +69,7 @@ export const characters: Character[] = [
     name: 'Internet Irene',
     x: 800, // Internet Point
     y: 1020,
-    spriteSheet: 'npc-sprites', // Use the image key
+    spriteSheet: 'character-atlas',
     dialogues: npcDialogues.internetPoint
   },
   
@@ -79,7 +79,7 @@ export const characters: Character[] = [
     name: 'Captain',
     x: 800, // Shore position
     y: 950,
-    spriteSheet: 'npc-sprites', // Use the image key
+    spriteSheet: 'character-atlas',
     dialogues: []
   }
 ];

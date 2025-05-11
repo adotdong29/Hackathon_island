@@ -49,11 +49,11 @@ export class GameEngine {
     this.animationSystem = new AnimationSystem();
     this.spriteSystem = new SpriteSystem(); // SpriteSystem is initialized
 
-    // Load sprite assets (adjust paths as necessary)
-    // These keys ('player-sprites', 'npc-sprites') must match what SpriteSystem expects for the image key
-    // and Character.spriteSheet should refer to these keys.
-    this.renderSystem.loadImage('player-sprites', '/sprites/player_spritesheet.png'); // Example path
-    this.renderSystem.loadImage('npc-sprites', '/sprites/npc_spritesheet.png');       // Example path
+    // Load the main character sprite sheet
+    this.renderSystem.loadImage('character-atlas', '/sprites/characters.png');
+    // If you have house.png and bird.png and want to use them as sprites, load them here too:
+    // this.renderSystem.loadImage('house-sprite', '/sprites/house.png');
+    // this.renderSystem.loadImage('bird-sprite', '/sprites/bird.png');
 
     // Initialize pathfinding and potentially other logic after all assets are loaded
     this.renderSystem.waitForLoad().then(() => {
