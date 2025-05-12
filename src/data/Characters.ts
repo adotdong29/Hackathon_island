@@ -7,8 +7,8 @@ export const characters: Character[] = [
   {
     id: 'player',
     name: 'Player',
-    x: 800, // Starting position
-    y: 900,
+    x: 400, // Starting position centered
+    y: 400,
     spriteSheet: 'character-atlas',
     dialogues: []
   },
@@ -17,8 +17,8 @@ export const characters: Character[] = [
   {
     id: 'techGuru',
     name: 'TechGuru',
-    x: 800, // Center position
-    y: 800,
+    x: 400,
+    y: 300,
     spriteSheet: 'character-atlas',
     dialogues: []
   },
@@ -27,48 +27,48 @@ export const characters: Character[] = [
   {
     id: 'hardwareHank',
     name: 'Hardware Hank',
-    x: 960, // Hardware Zone
-    y: 800,
+    x: 500,
+    y: 300,
     spriteSheet: 'character-atlas',
     dialogues: npcDialogues.hardwareZone
   },
   {
     id: 'softwareSam',
     name: 'Software Sam',
-    x: 800, // Software Valley
-    y: 640,
+    x: 400,
+    y: 200,
     spriteSheet: 'character-atlas',
     dialogues: npcDialogues.softwareValley
   },
   {
     id: 'arcadeAnnie',
     name: 'Arcade Annie',
-    x: 640, // Arcade Cove
-    y: 800,
+    x: 300,
+    y: 300,
     spriteSheet: 'character-atlas',
     dialogues: npcDialogues.arcadeCove
   },
   {
     id: 'consoleCarl',
     name: 'Console Carl',
-    x: 896, // Console Island
-    y: 896,
+    x: 450,
+    y: 450,
     spriteSheet: 'character-atlas',
     dialogues: npcDialogues.consoleIsland
   },
   {
     id: 'mobileMolly',
     name: 'Mobile Molly',
-    x: 704, // Mobile Bay
-    y: 896,
+    x: 350,
+    y: 450,
     spriteSheet: 'character-atlas',
     dialogues: npcDialogues.mobileBay
   },
   {
     id: 'internetIrene',
     name: 'Internet Irene',
-    x: 800, // Internet Point
-    y: 1020,
+    x: 400,
+    y: 500,
     spriteSheet: 'character-atlas',
     dialogues: npcDialogues.internetPoint
   },
@@ -77,8 +77,8 @@ export const characters: Character[] = [
   {
     id: 'captain',
     name: 'Captain',
-    x: 800, // Shore position
-    y: 950,
+    x: 400,
+    y: 475,
     spriteSheet: 'character-atlas',
     dialogues: []
   }
