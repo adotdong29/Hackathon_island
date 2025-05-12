@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { useGameState } from '../hooks/useGameState';
+import { useGameState } from '../hooks/useGamestate';
 import DialogueBox from './DialogueBox';
 import GameUI from './GameUI';
 import { GameEngine } from '../engine/GameEngine';

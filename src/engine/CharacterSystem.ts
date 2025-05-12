@@ -1,7 +1,7 @@
 import { RenderSystem } from './RenderSystem';
 import { Character } from '../types/GameTypes';
-import { SpriteSystem } from './SpriteSystem'; // Import SpriteSystem
-import { characters } from '../data/characters';
+import { SpriteSystem } from './SpriteSystem';
+import { characters } from '../data/Characters';
 
 export class CharacterSystem {
   private characters: Character[] = [];
@@ -9,7 +9,7 @@ export class CharacterSystem {
   private playerTargetX: number = 0;
   private playerTargetY: number = 0;
   private playerMoving: boolean = false;
-  private playerSpeed: number = 4; // Increased speed
+  private playerSpeed: number = 4;
   private playerDirection: string = 'down';
   private currentPath: { x: number, y: number }[] = [];
   private currentPathIndex: number = 0;
@@ -28,11 +28,11 @@ export class CharacterSystem {
     this.updatePlayerMovement();
   }
 
-  public render(renderSystem: RenderSystem, spriteSystem: SpriteSystem): void { // Add spriteSystem parameter
+  public render(renderSystem: RenderSystem, spriteSystem: SpriteSystem): void {
     // Render NPCs
     this.characters.forEach(character => {
       if (character.id !== 'player') {
-        spriteSystem.renderSprite(renderSystem, character.id, character.spriteSheet); // Use character.id for sprite data and character.spriteSheet for image key
+        spriteSystem.renderSprite(renderSystem, character.id, character.spriteSheet);
         
         // Draw character name above
         renderSystem.drawText(
@@ -48,20 +48,20 @@ export class CharacterSystem {
     
     // Render player
     if (this.player) {
-      spriteSystem.renderSprite(renderSystem, this.player.id, this.player.spriteSheet); // Use player.id and player.spriteSheet
+      spriteSystem.renderSprite(renderSystem, this.player.id, this.player.spriteSheet);
     }
   }
 
   private getNPCColor(id: string): string {
     const colors: Record<string, string> = {
-      'techGuru': '#FF69B4', // Hot Pink
-      'hardwareHank': '#FF4500', // Orange Red
-      'softwareSam': '#32CD32', // Lime Green
-      'arcadeAnnie': '#9370DB', // Medium Purple
-      'consoleCarl': '#20B2AA', // Light Sea Green
-      'mobileMolly': '#FFD700', // Gold
-      'internetIrene': '#FF1493', // Deep Pink
-      'captain': '#4169E1' // Royal Blue
+      'techGuru': '#FF69B4',
+      'hardwareHank': '#FF4500',
+      'softwareSam': '#32CD32',
+      'arcadeAnnie': '#9370DB',
+      'consoleCarl': '#20B2AA',
+      'mobileMolly': '#FFD700',
+      'internetIrene': '#FF1493',
+      'captain': '#4169E1'
     };
     return colors[id] || '#808080';
   }
@@ -143,7 +143,7 @@ export class CharacterSystem {
   }
 
   public checkNPCClick(x: number, y: number): Character | null {
-    const clickRadius = 40; // Increased click radius
+    const clickRadius = 40;
     
     for (const character of this.characters) {
       if (character.id === 'player') continue;
