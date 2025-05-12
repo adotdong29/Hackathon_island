@@ -38,7 +38,24 @@ export class InputSystem {
     }
   
     public update(): void {
-      // Update input state if needed
+      // Handle keyboard movement
+      const speed = 5;
+      const movement = { x: 0, y: 0 };
+
+      if (this.isKeyDown('ArrowUp') || this.isKeyDown('w')) {
+        movement.y -= speed;
+      }
+      if (this.isKeyDown('ArrowDown') || this.isKeyDown('s')) {
+        movement.y += speed;
+      }
+      if (this.isKeyDown('ArrowLeft') || this.isKeyDown('a')) {
+        movement.x -= speed;
+      }
+      if (this.isKeyDown('ArrowRight') || this.isKeyDown('d')) {
+        movement.x += speed;
+      }
+
+      return movement;
     }
   
     public isKeyDown(key: string): boolean {
@@ -78,7 +95,7 @@ export class InputSystem {
     private handleTouchStart = (e: TouchEvent): void => {
       this.mouseDown = true;
       this.updateTouchPosition(e);
-      e.preventDefault(); // Prevent scrolling
+      e.preventDefault();
     };
   
     private handleTouchEnd = (e: TouchEvent): void => {
@@ -104,5 +121,4 @@ export class InputSystem {
         this.mouseY = e.touches[0].clientY - rect.top;
       }
     }
-  }
-  
+}

@@ -9,7 +9,7 @@ export class CharacterSystem {
   private playerTargetX: number = 0;
   private playerTargetY: number = 0;
   private playerMoving: boolean = false;
-  private playerSpeed: number = 4;
+  private playerSpeed: number = 5;
   private playerDirection: string = 'down';
   private currentPath: { x: number, y: number }[] = [];
   private currentPathIndex: number = 0;
@@ -24,15 +24,37 @@ export class CharacterSystem {
     }
   }
 
-  public update(deltaTime: number): void {
-    this.updatePlayerMovement();
+  public update(deltaTime: number, movement: { x: number, y: number }): void {
+    if (this.player) {
+      // Update player position based on keyboard input
+      if (movement.x !== 0 || movement.y !== 0) {
+        this.player.x += movement.x;
+        this.player.y += movement.y;
+        this.playerMoving = true;
+
+        // Update direction based on movement
+        if (Math.abs(movement.x) > Math.abs(movement.y)) {
+          this.playerDirection = movement.x > 0 ? 'right' : 'left';
+        } else {
+          this.playerDirection = movement.y > 0 ? 'down' : 'up';
+        }
+      } else {
+        this.playerMoving = false;
+      }
+    }
   }
 
   public render(renderSystem: RenderSystem, spriteSystem: SpriteSystem): void {
     // Render NPCs
     this.characters.forEach(character => {
       if (character.id !== 'player') {
-        spriteSystem.renderSprite(renderSystem, character.id, character.spriteSheet);
+        renderSystem.drawCharacter(
+          character.x,
+          character.y,
+          'down',
+          false,
+          this.getNPCColor(character.id)
+        );
         
         // Draw character name above
         renderSystem.drawText(
@@ -48,7 +70,13 @@ export class CharacterSystem {
     
     // Render player
     if (this.player) {
-      spriteSystem.renderSprite(renderSystem, this.player.id, this.player.spriteSheet);
+      renderSystem.drawCharacter(
+        this.player.x,
+        this.player.y,
+        this.playerDirection,
+        this.playerMoving,
+        '#FFD700'
+      );
     }
   }
 
@@ -66,80 +94,9 @@ export class CharacterSystem {
     return colors[id] || '#808080';
   }
 
-  private updatePlayerMovement(): void {
-    if (!this.player) return;
-    
-    if (this.currentPath.length > 0 && this.currentPathIndex < this.currentPath.length) {
-      const targetPoint = this.currentPath[this.currentPathIndex];
-      this.playerTargetX = targetPoint.x;
-      this.playerTargetY = targetPoint.y;
-      this.playerMoving = true;
-      
-      const dx = this.playerTargetX - this.player.x;
-      const dy = this.playerTargetY - this.player.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      if (distance < this.playerSpeed) {
-        this.player.x = this.playerTargetX;
-        this.player.y = this.playerTargetY;
-        this.currentPathIndex++;
-        
-        if (this.currentPathIndex >= this.currentPath.length) {
-          this.playerMoving = false;
-        }
-      } else {
-        const vx = (dx / distance) * this.playerSpeed;
-        const vy = (dy / distance) * this.playerSpeed;
-        
-        this.player.x += vx;
-        this.player.y += vy;
-        
-        // Update player direction
-        this.updatePlayerDirection(vx, vy);
-      }
-    } else if (this.playerMoving) {
-      const dx = this.playerTargetX - this.player.x;
-      const dy = this.playerTargetY - this.player.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      if (distance < this.playerSpeed) {
-        this.player.x = this.playerTargetX;
-        this.player.y = this.playerTargetY;
-        this.playerMoving = false;
-        return;
-      }
-      
-      const vx = (dx / distance) * this.playerSpeed;
-      const vy = (dy / distance) * this.playerSpeed;
-      
-      this.player.x += vx;
-      this.player.y += vy;
-      
-      // Update player direction
-      this.updatePlayerDirection(vx, vy);
-    }
-  }
-
-  private updatePlayerDirection(vx: number, vy: number): void {
-    if (Math.abs(vx) > Math.abs(vy)) {
-      this.playerDirection = vx > 0 ? 'right' : 'left';
-    } else {
-      this.playerDirection = vy > 0 ? 'down' : 'up';
-    }
-  }
-
-  public movePlayerToPosition(x: number, y: number): void {
-    if (!this.player) return;
-    this.playerTargetX = x;
-    this.playerTargetY = y;
-    this.playerMoving = true;
-  }
-
-  public movePlayerAlongPath(path: { x: number, y: number }[]): void {
-    if (path.length === 0) return;
-    this.currentPath = path;
-    this.currentPathIndex = 0;
-    this.playerMoving = true;
+  public getPlayerPosition(): { x: number, y: number } | null {
+    if (!this.player) return null;
+    return { x: this.player.x, y: this.player.y };
   }
 
   public checkNPCClick(x: number, y: number): Character | null {
@@ -158,11 +115,6 @@ export class CharacterSystem {
     }
     
     return null;
-  }
-
-  public getPlayerPosition(): { x: number, y: number } | null {
-    if (!this.player) return null;
-    return { x: this.player.x, y: this.player.y };
   }
 
   public getPlayer(): Character | null {
